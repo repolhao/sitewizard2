@@ -3,103 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loja Oficial WIP | Material Didático Wizard</title>
+<title>Aquisição de Material Didático | WIP Wizard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 <style>
-  .portal-hero {
-    text-align: center;
+  /* Landing Page conforme escopo do documento */
+  .hero-landing {
     padding: 60px 20px 40px;
+    background: #ffffff;
+    text-align: center;
   }
-  .portal-hero h1 {
+  .hero-landing .eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .hero-landing h1 {
     font-size: 32px;
-    margin-bottom: 12px;
+    color: var(--navy);
+    line-height: 1.25;
+    max-width: 680px;
+    margin: 0 auto 16px;
   }
-  .portal-hero p {
+  .hero-landing p {
     font-size: 16px;
-    color: var(--gray-light);
-    max-width: 540px;
-    margin: 0 auto;
+    color: var(--gray);
+    max-width: 580px;
+    margin: 0 auto 32px;
+    line-height: 1.5;
   }
-  .segment-grid {
+  
+  .btn-comprar-main {
+    display: inline-block;
+    background: var(--red);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 18px;
+    padding: 20px 40px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(220, 38, 38, 0.25);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-comprar-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(220, 38, 38, 0.35);
+  }
+
+  .info-steps-section {
+    padding: 40px 20px 60px;
+    background: #f8fafc;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .steps-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    margin-top: 32px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
   }
-  .segment-card {
+  .step-card {
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius);
-    padding: 32px 24px;
-    text-align: center;
+    padding: 24px;
     box-shadow: var(--shadow-sm);
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    position: relative;
-    overflow: hidden;
   }
-  .segment-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
+  .step-num {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: block;
   }
-  .segment-card.kids::before { background: var(--kids-accent); }
-  .segment-card.teens::before { background: var(--teens-accent); }
-  .segment-card.adults::before { background: var(--adults-accent); }
+  .step-card h3 {
+    font-size: 16px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .step-card p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.4;
+  }
 
-  .segment-card:hover {
-    transform: translateY(-4px);
+  /* Modal de Cadastro do Aluno */
+  .modal-overlay {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+  }
+  .modal-overlay.active {
+    display: flex;
+  }
+  .modal-content {
+    background: #ffffff;
+    border-radius: var(--radius);
+    padding: 32px;
+    max-width: 540px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
     box-shadow: var(--shadow-md);
   }
-  .segment-tag {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
-    display: block;
-  }
-  .kids .segment-tag { color: var(--kids-accent); }
-  .teens .segment-tag { color: var(--teens-accent); }
-  .adults .segment-tag { color: var(--adults-accent); }
-
-  .segment-card h2 {
-    font-size: 22px;
-    margin-bottom: 8px;
-  }
-  .segment-card p {
-    font-size: 14px;
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
     color: var(--gray);
-    margin-bottom: 24px;
-  }
-  .btn-segment {
-    display: block;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 14px;
-    color: #ffffff;
-    transition: opacity 0.2s;
-  }
-  .kids .btn-segment { background: var(--kids-accent); }
-  .teens .btn-segment { background: var(--teens-accent); }
-  .adults .btn-segment { background: var(--adults-accent); }
-
-  .btn-segment:hover {
-    opacity: 0.9;
-  }
-
-  @media (min-width: 768px) {
-    .portal-hero h1 { font-size: 40px; }
-    .segment-grid { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
 </head>
@@ -110,53 +140,114 @@
     <a href="#" class="logo">
       <img src="img/wizard-logo.png" alt="Wizard by Pearson" class="logo-img">
     </a>
-    <span class="track-pill">Portal Oficial de Materiais</span>
+    <span class="track-pill">Portal de Solicitação de Material</span>
   </div>
 </header>
 
-<section class="hero portal-hero">
+<!-- LANDING PAGE - APRESENTAÇÃO E BOTÃO PRINCIPAL -->
+<section class="hero-landing">
   <div class="wrap">
-    <span class="eyebrow">Selecione o segmento</span>
-    <h1>Qual é a sua turma na Wizard?</h1>
-    <p>Escolha o programa do aluno para acessar o material didático oficial e realizar o pedido online.</p>
+    <span class="eyebrow">Wizard International Program</span>
+    <h1>Aquisição de Material Didático WIP</h1>
+    <p>Adquira o material didático oficial do seu curso com praticidade. Preencha seus dados para identificarmos sua matrícula na unidade e finalize o pagamento único online.</p>
+    
+    <button onclick="abrirModalCadastro()" class="btn-comprar-main">
+      📚 COMPRAR MATERIAL DIDÁTICO
+    </button>
   </div>
 </section>
 
-<main class="wrap main-content">
-  <div class="segment-grid">
-    
-    <!-- CARD KIDS -->
-    <div class="segment-card kids">
-      <div>
-        <span class="segment-tag">3 a 10 Anos</span>
-        <h2>WIP Kids</h2>
-        <p>Educação Infantil e Fundamental I. Aprendizado lúdico e dinâmico adaptado às primeiras idades.</p>
+<!-- EXPLICAÇÃO DO FLUXO (SEGUNDO O DOCUMENTO) -->
+<section class="info-steps-section">
+  <div class="wrap">
+    <h2 style="font-size: 20px; color: var(--navy); text-align: center;">Como funciona a sua solicitação:</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <span class="step-num">Etapa 1</span>
+        <h3>Cadastro Inicial</h3>
+        <p>Clique em comprar material e informe os dados do aluno e número da matrícula.</p>
       </div>
-      <a href="kids.html" class="btn-segment">Acessar Kids</a>
-    </div>
-
-    <!-- CARD TEENS -->
-    <div class="segment-card teens">
-      <div>
-        <span class="segment-tag">11 a 17 Anos</span>
-        <h2>WIP Teens</h2>
-        <p>Fundamental II e Ensino Médio. Foco em conversação, exames e certificações internacionais.</p>
+      <div class="step-card">
+        <span class="step-num">Etapa 2</span>
+        <h3>Pagamento Único</h3>
+        <p>Acesse a tela de checkout segura para concluir a compra via Pix ou Cartão de Crédito.</p>
       </div>
-      <a href="teens.html" class="btn-segment">Acessar Teens</a>
-    </div>
-
-    <!-- CARD ADULTS -->
-    <div class="segment-card adults">
-      <div>
-        <span class="segment-tag">Curso Adulto</span>
-        <h2>WIP Adults</h2>
-        <p>Desenvolvimento para o mercado de trabalho, viagens e fluência rápida em horários flexíveis.</p>
+      <div class="step-card">
+        <span class="step-num">Etapa 3</span>
+        <h3>Identificação Interna</h3>
+        <p>Nossa secretaria valida a matrícula para identificar o material correto e solicitar via SAF.</p>
       </div>
-      <a href="adults.html" class="btn-segment">Acessar Adults</a>
     </div>
-
   </div>
-</main>
+</section>
+
+<!-- MODAL COM O FORMULÁRIO DE CADASTRO (EXATAMENTE OS CAMPOS DO DOCUMENTO) -->
+<div id="modal-cadastro" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" onclick="fecharModalCadastro()">&times;</button>
+    
+    <h2 style="font-size: 20px; color: var(--navy); margin-bottom: 6px;">Cadastro do Aluno</h2>
+    <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">Preencha os dados abaixo para identificarmos seu pagamento na secretaria.</p>
+
+    <form id="student-register-form" class="card-form" onsubmit="salvarCadastroEIrParaCheckout(event)" novalidate>
+      
+      <div>
+        <label for="student-name">Nome completo do aluno *</label>
+        <input type="text" id="student-name" placeholder="Ex: João Silva" required>
+      </div>
+
+      <div class="row-2">
+        <div>
+          <label for="student-cpf">CPF *</label>
+          <input type="text" id="student-cpf" placeholder="000.000.000-00" maxlength="14" required>
+        </div>
+        <div>
+          <label for="student-dob">Data de nascimento *</label>
+          <input type="date" id="student-dob" required>
+        </div>
+      </div>
+
+      <div class="row-2">
+        <div>
+          <label for="student-unit">Unidade *</label>
+          <select id="student-unit" required>
+            <option value="">Selecione...</option>
+            <option value="Laranjeiras">Laranjeiras</option>
+            <option value="Camburi">Camburi</option>
+            <option value="Itaparica">Itaparica</option>
+            <option value="Praia da Costa">Praia da Costa</option>
+          </select>
+        </div>
+        <div>
+          <label for="student-reg">Número da matrícula *</label>
+          <input type="text" id="student-reg" placeholder="Ex: 12345" required>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--line); margin: 16px 0; padding-top: 16px;">
+        <div>
+          <label for="resp-name">Nome do responsável *</label>
+          <input type="text" id="resp-name" placeholder="Ex: Maria Silva" required>
+        </div>
+
+        <div class="row-2">
+          <div>
+            <label for="resp-phone">WhatsApp *</label>
+            <input type="text" id="resp-phone" placeholder="(00) 00000-0000" maxlength="15" required>
+          </div>
+          <div>
+            <label for="resp-email">E-mail *</label>
+            <input type="email" id="resp-email" placeholder="seu@email.com" required>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-pay" style="margin-top: 10px;">
+        CONTINUAR PARA PAGAMENTO →
+      </button>
+    </form>
+  </div>
+</div>
 
 <footer>
   <div class="wrap footer-row">
@@ -165,5 +256,66 @@
   </div>
 </footer>
 
+<script>
+  function abrirModalCadastro() {
+    document.getElementById('modal-cadastro').classList.add('active');
+  }
+
+  function fecharModalCadastro() {
+    document.getElementById('modal-cadastro').classList.remove('active');
+  }
+
+  // Máscaras de entrada
+  document.getElementById('student-cpf').addEventListener('input', e => {
+    let v = e.target.value.replace(/\D/g, '');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d)/, '$1.$2');
+    v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    e.target.value = v;
+  });
+
+  document.getElementById('resp-phone').addEventListener('input', e => {
+    let v = e.target.value.replace(/\D/g, '');
+    v = v.replace(/^(\d{2})(\d)/g, '($1) $2');
+    v = v.replace(/(\d{5})(\d)/, '$1-$2');
+    e.target.value = v;
+  });
+
+  function salvarCadastroEIrParaCheckout(e) {
+    e.preventDefault();
+    const form = document.getElementById('student-register-form');
+    const inputs = form.querySelectorAll('input, select');
+    let valido = true;
+
+    inputs.forEach(input => {
+      if(!input.value.trim()){
+        input.style.borderColor = 'var(--red)';
+        valido = false;
+      } else {
+        input.style.borderColor = 'var(--line)';
+      }
+    });
+
+    if(!valido) return;
+
+    // Guarda as informações cadastradas para associar com o pagamento
+    const alunoData = {
+      nome: document.getElementById('student-name').value,
+      cpf: document.getElementById('student-cpf').value,
+      nascimento: document.getElementById('student-dob').value,
+      unidade: document.getElementById('student-unit').value,
+      matricula: document.getElementById('student-reg').value,
+      responsavel: document.getElementById('resp-name').value,
+      whatsapp: document.getElementById('resp-phone').value,
+      email: document.getElementById('resp-email').value,
+      dataCadastro: new Date().toLocaleDateString('pt-BR')
+    };
+
+    localStorage.setItem('aluno_pendente', JSON.stringify(alunoData));
+    
+    // Avança para a Etapa 2 (Checkout)
+    window.location.href = 'checkout.html';
+  }
+</script>
 </body>
 </html>

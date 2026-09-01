@@ -329,6 +329,44 @@
     const segundos = tempoRestante % 60;
     timerElement.innerText = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
   }, 1000);
+  function finalizarPagamento() {
+  // 1. Pega os dados do aluno que foram preenchidos no formulário do index.html
+  const alunoData = JSON.parse(localStorage.getItem('aluno_pendente') || '{}');
+
+  if (!alunoData.nome) {
+    alert("Dados do aluno não encontrados. Preencha o cadastro na página inicial.");
+    window.location.href = 'index.html';
+    return;
+  }
+
+  // 2. Busca a lista atual de pedidos ou inicia uma nova
+  const pedidosExistentes = JSON.parse(localStorage.getItem('pedidos_secretaria') || '[]');
+
+  // 3. Monta o novo pedido com os dados do cadastro
+  const novoPedido = {
+    id: 'PED-' + Math.floor(1000 + Math.random() * 9000),
+    aluno: alunoData.nome,
+    cpf: alunoData.cpf,
+    matricula: alunoData.matricula,
+    unidade: alunoData.unidade,
+    responsavel: alunoData.responsavel,
+    whatsapp: alunoData.whatsapp,
+    email: alunoData.email,
+    data: new Date().toLocaleDateString('pt-BR'),
+    pagamento: '✅ Pago',
+    statusSaf: '🟡 Solicitar'
+  };
+
+  // 4. Insere o novo pedido no topo da lista
+  pedidosExistentes.unshift(novoPedido);
+
+  // 5. Salva de volta no localStorage para o secretaria.html ler
+  localStorage.setItem('pedidos_secretaria', JSON.stringify(pedidosExistentes));
+
+  // 6. Limpa o aluno pendente e vai para a tela de sucesso
+  localStorage.removeItem('aluno_pendente');
+  window.location.href = 'sucesso.html';
+}
 </script>
 
 </body>

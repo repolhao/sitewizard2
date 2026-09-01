@@ -1,7 +1,34 @@
 /* ============================================================
    WIP Loja — Design Corporativo Premium & Mobile Responsive
    ============================================================ */
+/* Reset global e correção do rodapé colado ao final */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #0f172a; /* Mesma cor do seu footer (ou #0b1120 / #1e293b) */
+}
+
+/* O conteúdo principal cresce para empurrar o footer */
+main, .hero-landing, .info-steps-section, .success-container, .admin-wrap {
+  flex: 1 0 auto;
+}
+
+/* Garante que o footer fique sempre no final absoluto */
+footer {
+  margin-top: auto;
+  width: 100%;
+}
 :root {
   --navy: #0a0f29;
   --navy-light: #12193e;
