@@ -13,8 +13,8 @@
 
 <header>
   <div class="wrap nav">
-    <a href="#" class="logo">
-      <img src="img/wizard-logo.png" alt="Wizard by Pearson" class="logo-img">
+    <a href="index.html" class="logo">
+  <img src="img/logodaWIP.png" alt="Wizard International Program" style="height: 85px; width: auto;" />
     </a>
     <span class="track-pill">Ambiente Seguro</span>
   </div>
@@ -114,44 +114,42 @@
         </form>
       </div>
 
-      <!-- ABA PIX -->
-      <div id="panel-pix" class="pay-panel">
-        <div class="pix-box">
-          <div class="pix-timer-box">
-            Este QR Code expira em: <span id="pix-timer">15:00</span>
-          </div>
-
-          <div class="pix-placeholder">QR Code Pix</div>
-          <p class="pix-discount">5% de desconto no Pix</p>
-          
-          <div class="pix-code">
-            <input type="text" id="pix-code-input" value="00020126360014BR.GOV.BCB.PIX0114+55119999999995204000053039865405350.005802BR5925WIP LOJA OFICIAL6009SAO PAULO62070503***6304E2CA" readonly>
-            <button type="button" id="btn-copiar" class="btn-copy" onclick="copiarPix()">Copiar</button>
-          </div>
-
-          <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">
-            Após realizar o pagamento no app do seu banco, o sistema confirmará automaticamente.
-          </p>
-
-          <button type="button" class="btn-pay" onclick="simularAprovacaoPix()">Já paguei / Simular Aprovação</button>
-        </div>
-      </div>
+ <!-- ABA PIX -->
+<div id="panel-pix" class="pay-panel">
+  <div class="pix-box" style="text-align: center;">
+    <div class="pix-timer-box" style="margin-bottom: 15px;">
+      Este QR Code expira em: <span id="pix-timer">15:00</span>
     </div>
 
-    <!-- RESUMO DO PEDIDO -->
-    <div class="order-summary">
-      <div class="trust-banner">
-        <div class="stars">★★★★★</div>
-        <div class="trust-text">
-          <strong>4.9 / 5.0</strong> — Satisfação garantida por mais de 500 pais e alunos.
-        </div>
-      </div>
+    <!-- Imagem Dinâmica do QR Code -->
+    <div style="margin: 15px 0;">
+      <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020126360014BR.GOV.BCB.PIX0114%2B55119999999995204000053039865405350.005802BR5925WIP%20LOJA%20OFICIAL6009SAO%20PAULO62070503***6304E2CA" alt="QR Code Pix" style="width: 180px; height: 180px; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px;">
+    </div>
 
-      <h3>Resumo do Pedido</h3>
-      <div class="order-line">
-        <span>Produto</span>
-        <strong id="summary-product">Material Didático</strong>
-      </div>
+    <p class="pix-discount">5% de desconto no Pix</p>
+    
+    <div class="pix-code" style="margin-bottom: 15px;">
+      <input type="text" id="pix-code-input" value="00020126360014BR.GOV.BCB.PIX0114+55119999999995204000053039865405350.005802BR5925WIP LOJA OFICIAL6009SAO PAULO62070503***6304E2CA" readonly>
+      <button type="button" id="btn-copiar" class="btn-copy" onclick="copiarPix()">Copiar</button>
+    </div>
+
+    <p style="font-size: 13px; color: var(--gray); margin-bottom: 20px;">
+      Após realizar o pagamento no app do seu banco, o sistema confirmará automaticamente.
+    </p>
+
+    <button type="button" class="btn-pay" onclick="simularAprovacaoPix()">Já paguei / Simular Aprovação</button>
+  </div>
+</div>
+
+    <!-- RESUMO DO PEDIDO -->
+
+<div class="order-summary">
+  <!-- Adicione margin-top: 0 para alinhar perfeitamente no topo da caixa -->
+  <h3 style="margin-top: 0; padding-top: 0;">Resumo do Pedido</h3>
+  <div class="order-line">
+    <span>Produto</span>
+    <strong id="summary-product">Material Didático</strong>
+  </div>
       <div class="order-line">
         <span>Segmento</span>
         <span id="summary-track">Geral</span>
@@ -234,8 +232,7 @@
     }
 
     if (input.value.trim() !== '') {
-      input.classList.remove('input-error');
-      input.classList.add('input-success');
+      input.classList.remove('input-success');
       return true;
     } else {
       input.classList.remove('input-success');
@@ -262,11 +259,7 @@
       return;
     }
 
-    document.getElementById('processing-overlay').classList.add('active');
-
-    setTimeout(() => {
-      redirecionarParaSucesso();
-    }, 3000);
+    salvarPedidoEFinalizar('Cartão de Crédito');
   }
 
   /* ABAS DE PAGAMENTO */
@@ -302,13 +295,39 @@
 
   /* SIMULAR APROVAÇÃO DO PIX */
   function simularAprovacaoPix() {
+    salvarPedidoEFinalizar('PIX');
+  }
+
+  /* GRAVA DADOS NA SECRETARIA E REDIRECIONA */
+  function salvarPedidoEFinalizar(metodoPagamento) {
     document.getElementById('processing-overlay').classList.add('active');
+
+    const alunoData = JSON.parse(localStorage.getItem('aluno_pendente') || '{}');
+    const pedidosExistentes = JSON.parse(localStorage.getItem('pedidos_secretaria') || '[]');
+
+const novoPedido = {
+  id: 'PED-' + Math.floor(1000 + Math.random() * 9000),
+  aluno: alunoData.nome || document.getElementById('cust-name').value || 'Aluno Não Informado',
+  cpf: alunoData.cpf || 'Não informado',
+  matricula: alunoData.matricula || 'N/A',
+  unidade: alunoData.unidade || 'Unidade Principal', // Fallback atualizado
+  responsavel: alunoData.responsavel || document.getElementById('cust-name').value,
+  whatsapp: alunoData.whatsapp || document.getElementById('cust-phone').value,
+  email: alunoData.email || document.getElementById('cust-email').value,
+  data: new Date().toLocaleDateString('pt-BR'),
+  pagamento: `✅ Pago (${metodoPagamento})`,
+  statusSaf: '🟡 Solicitar'
+};
+
+    pedidosExistentes.unshift(novoPedido);
+    localStorage.setItem('pedidos_secretaria', JSON.stringify(pedidosExistentes));
+    localStorage.removeItem('aluno_pendente');
+
     setTimeout(() => {
       redirecionarParaSucesso();
     }, 2000);
   }
 
-  /* FUNÇÃO DE REDIRECIONAMENTO */
   function redirecionarParaSucesso() {
     const produto = document.getElementById('summary-product').innerText;
     const preco = document.getElementById('summary-price').innerText;
@@ -329,44 +348,6 @@
     const segundos = tempoRestante % 60;
     timerElement.innerText = `${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
   }, 1000);
-  function finalizarPagamento() {
-  // 1. Pega os dados do aluno que foram preenchidos no formulário do index.html
-  const alunoData = JSON.parse(localStorage.getItem('aluno_pendente') || '{}');
-
-  if (!alunoData.nome) {
-    alert("Dados do aluno não encontrados. Preencha o cadastro na página inicial.");
-    window.location.href = 'index.html';
-    return;
-  }
-
-  // 2. Busca a lista atual de pedidos ou inicia uma nova
-  const pedidosExistentes = JSON.parse(localStorage.getItem('pedidos_secretaria') || '[]');
-
-  // 3. Monta o novo pedido com os dados do cadastro
-  const novoPedido = {
-    id: 'PED-' + Math.floor(1000 + Math.random() * 9000),
-    aluno: alunoData.nome,
-    cpf: alunoData.cpf,
-    matricula: alunoData.matricula,
-    unidade: alunoData.unidade,
-    responsavel: alunoData.responsavel,
-    whatsapp: alunoData.whatsapp,
-    email: alunoData.email,
-    data: new Date().toLocaleDateString('pt-BR'),
-    pagamento: '✅ Pago',
-    statusSaf: '🟡 Solicitar'
-  };
-
-  // 4. Insere o novo pedido no topo da lista
-  pedidosExistentes.unshift(novoPedido);
-
-  // 5. Salva de volta no localStorage para o secretaria.html ler
-  localStorage.setItem('pedidos_secretaria', JSON.stringify(pedidosExistentes));
-
-  // 6. Limpa o aluno pendente e vai para a tela de sucesso
-  localStorage.removeItem('aluno_pendente');
-  window.location.href = 'sucesso.html';
-}
 </script>
 
 </body>
