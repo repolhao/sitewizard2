@@ -871,3 +871,52 @@ footer {
   background: var(--navy);
   color: #ffffff;
 }
+/* Header & Navbar Responsivo */
+header {
+  width: 100%;
+  background-color: var(--navy, #0f172a); /* Mantém o fundo escuro do cabeçalho */
+  padding-top: 24px; /* <--- ESPAÇO MAIOR ACIMA DA LOGO */
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--red, #dc2626);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  max-height: 48px; /* Controla a altura da logo para não estourar */
+  width: auto;
+  object-fit: contain;
+}
+
+/* Responsividade para Celulares e Telas Menores */
+@media (max-width: 640px) {
+  header {
+    padding-top: 20px; /* Mantém um respiro bom no mobile */
+    padding-bottom: 14px;
+  }
+
+  .nav {
+    flex-direction: column; /* Em telas muito pequenas, empilha logo e pill se necessário */
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-img {
+    max-height: 38px; /* Reduz levemente a logo em telas pequenas */
+  }
+
+  .track-pill {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+}
